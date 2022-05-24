@@ -1,29 +1,25 @@
 /*Datos principales del componenete perfil*/
 
+/** Para evitar errores, estar seguros de haber instalado los paquetes con npm install **/
+
 /**Importaciones principales del componente**/
-/*Importacion de las herramientas principales de cada componente desde la biblioteca de angular*/
+/*Importacion de las herramientas principales*/
 import { Component, OnInit } from '@angular/core';
-/*Importacion de un servicio ofrecido en la nube para apoyar el guardado de imagenes*/
-import { CloudBinaryService }  from '../../../services/cloud-binary.service';
-/*Importacion de un servicio sobre nuevos usuarios para apoyar el cambio de datos*/
-import { NewUsuarioService } from '../../servicios/editarperfil.service'
-/*Importacion de un servicio sobre los cursos para apoyar el cambio de datos*/
-import { CursoService } from '../../../curso/servicios/curso.service'
-/*Importaciones desde la biblioteca de angular para ayudar en la formalizacion de formularios*/
 import {
   FormBuilder,
   FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
+/*Importacion de los servicios*/
+import { CloudBinaryService }  from '../../../services/cloud-binary.service';
+import { NewUsuarioService } from '../../servicios/editarperfil.service'
+import { CursoService } from '../../../curso/servicios/curso.service'
 
 /* Elementos del coponente para definir sus rutas especificas de valores */
 @Component({
-  /* Nombre del selector para el componente */
   selector: 'app-profile',
-  /* Direccion del modelo HTML del componente */
   templateUrl: './profile.component.html',
-  /* Direccion de los estilos CSS del componente */
   styleUrls: ['./profile.component.css'],
 })
 
@@ -32,33 +28,21 @@ export class ProfileComponent implements OnInit {
   /*Atributo principal del grupo de formularios*/
   perfilForm: FormGroup;
   /**Atributos principales que se muestran en el perfil**/
-  /*Correo del usuario*/
   correo: any;
-  /*URL de la imagen del perfil del usuario*/
   url: any;
-  /*Apellidos del usuario*/
   usuario_apellidos: any;
-  /*ID del usuario*/
   usuario_id: any;
-  /*Nombre del usuario*/
   usuario_nombre: any;
-  /*Descripcion del usuario*/
   descripcion: any;
-  /*Numero de cursos en los que esta matriculado el usuario*/
   cursosm: any;
 
   /* Objeto para editar los valores del perfil, se iguala a los valores del usuario para evitar problemas 
   a la hora de editarlos */
   objeto = {
-    /*Atributo del objeto para guardar los datos actuales del nombre del usuario*/
     usuario_nombre: sessionStorage.getItem("usuario_nombre"),
-    /*Atributo del objeto para guardar los datos actuales del apellido del usuario*/
     usuario_apellidos: sessionStorage.getItem("usuario_apellidos"),
-    /*Atributo del objeto para guardar los datos actuales del correo del usuario*/
     correo: sessionStorage.getItem("correo"),
-    /*Atributo del objeto para guardar los datos actuales del url de la imagen del perfil del usuario*/
     url: sessionStorage.getItem("url"),
-    /*Atributo del objeto para guardar los datos actuales de la descripcion del usuario*/
     descripcion: sessionStorage.getItem("descripcion"),
   }
 
@@ -68,28 +52,17 @@ export class ProfileComponent implements OnInit {
   /* Las constantes del constructor son los datos del usuario en cuestion, obtenidos al importar las funciones
   necesarias en fin de obtener los datos */
   constructor(
-    /*Parametro publico sobre el servicio de la nube importado*/
     public cloudBinaryService: CloudBinaryService, 
-    /*Parametro publico sobre el servicio del nuevo usuario importado*/
     public newUsuarioService: NewUsuarioService, 
-    /*Parametro publico sobre el servicio del curso importado*/
     public cursoService: CursoService,
-    /*Parametro publico sobre el servicio de los formularios importado*/
     private formBuilder: FormBuilder
     ) {
-      /*Especifica como falso el estado del cambio del boton*/
       this.cambio = false;
-      /*Especifica como el correo al correo obtenido de los datos actuales del usuario*/
       this.correo = sessionStorage.getItem("correo");
-      /*Especifica como la url de la imagen del perfil obtenido de los datos actuales del usuario*/
       this.url = sessionStorage.getItem("url");
-      /*Especifica como el apellido obtenido de los datos actuales del usuario*/
       this.usuario_apellidos = sessionStorage.getItem("usuario_apellidos");
-      /*Especifica como el ID de los datos actuales del usuario*/
       this.usuario_id = sessionStorage.getItem("usuario_id");
-      /*Especifica como el nombre obtenido de los datos actuales del usuario*/
       this.usuario_nombre = sessionStorage.getItem("usuario_nombre");
-      /*Especifica como la descripcion obtenida de los datos actuales del usuario*/
       this.descripcion = sessionStorage.getItem("descripcion");
   }
 
@@ -110,9 +83,7 @@ export class ProfileComponent implements OnInit {
         '',
         [
           Validators.required,
-          /*El input debe tener un minimo de 2 caracteres*/
           Validators.minLength(2),
-          /*El input debe tener un maximo de 30 caracteres*/
           Validators.maxLength(30),
         ],
       ],
@@ -121,9 +92,7 @@ export class ProfileComponent implements OnInit {
         '',
         [
           Validators.required,
-          /*El input debe tener un minimo de 2 caracteres*/
           Validators.minLength(2),
-          /*El input debe tener un maximo de 30 caracteres*/
           Validators.maxLength(30),
         ],
       ],
@@ -132,9 +101,7 @@ export class ProfileComponent implements OnInit {
         '',
         [
           Validators.required, 
-          /*El input debe ser necesariamente de tipo email*/
           Validators.email, 
-          /*El input debe tener un maximo de 30 caracteres*/
           Validators.maxLength(30)
         ],
       ],
@@ -143,9 +110,7 @@ export class ProfileComponent implements OnInit {
         '',
         [
           Validators.required,
-          /*El input debe tener un minimo de 10 caracteres*/
           Validators.minLength(10),
-          /*El input debe tener un maximo de 200 caracteres*/
           Validators.maxLength(200)
         ]
       ],
@@ -186,7 +151,6 @@ export class ProfileComponent implements OnInit {
 
   /* Funcion para el cambio al presionar el boton */
   modificarDatos() {
-    /*Cambia el atributo hacia true*/
     this.cambio = true;
   }
 
@@ -199,6 +163,8 @@ export class ProfileComponent implements OnInit {
     });
   }
   /* Metodo para enviar los datos y cambiar los datos de perfil */
+  /** Se pueden usar mejores metodos para enviar la información a traves del servicio, como un lector de JSONm sin tener que hacerlo
+   * manualmente, uno por uno, lo que significaria mejor rendimiento en la aplicacion. **/
   enviarDatos(evento){
     if (this.perfilForm.valid){
       let formData = new FormData(evento.target)
