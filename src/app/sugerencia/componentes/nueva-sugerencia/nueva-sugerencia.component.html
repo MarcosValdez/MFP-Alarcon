@@ -60,7 +60,9 @@
           >Ingrese una categoria</small
         >
       </div>
-      <!--Se define el tamaño de la siguiente columna-->
+
+
+    <!--Se debe mejorar esta parte poniendo una restriccion para que este campo sea obligatorio completarlo-->
       <div class="col-12 mt-3">
         <!--Informacion para denotar que se coloca una Descripcion-->
         <label for="">Descripción</label>
@@ -74,7 +76,6 @@
           placeholder="Ingrese la descripcion de la sugerencia"
           [class.is-invalid]="descripcionNoValido"
         ></textarea>
-        <!--Mensaje de alerta en caso de fallar al poner una descripcion de la nueva sugerencia-->
         <small class="text-danger mt-3 mt-lg-0" *ngIf="descripcionNoValido"
           >Ingrese un descripción valida no mayor a 100 caracteres</small
         >
